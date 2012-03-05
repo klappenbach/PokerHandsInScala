@@ -10,15 +10,15 @@ class HandTest extends FunSuite with ShouldMatchers {
   val threeOfDiamonds = Card(THREE, DIAMONDS)
   val twoOfSpades = Card(TWO, SPADES)
 
-//  test("A hand can be instantiated") {
-//    Hand(threeOfSpades, threeOfDiamonds, threeOfClubs, threeOfHearts, twoOfSpades)
-//  }
-//
-//  test("Duplicate card makes hand invalid") {
-//    intercept[InvalidHandException] {
-//      Hand(threeOfSpades, threeOfDiamonds, threeOfClubs, threeOfHearts, threeOfHearts)
-//    }
-//  }
+  test("A hand can be instantiated") {
+    Hand(threeOfSpades, threeOfDiamonds, threeOfClubs, threeOfHearts, twoOfSpades)
+  }
+
+  test("Duplicate card makes hand invalid") {
+    intercept[InvalidHandException] {
+      Hand(threeOfSpades, threeOfDiamonds, threeOfClubs, threeOfHearts, threeOfHearts)
+    }
+  }
 
   test("A card that is null in a hand makes the hand invalid") {
     intercept[InvalidHandException] {
@@ -26,9 +26,8 @@ class HandTest extends FunSuite with ShouldMatchers {
     }
   }
 
-//  test("highcard is ace") {
-//    val hand = Hand(Card(TWO, HEARTS), Card(THREE, HEARTS), Card(FIVE, SPADES), Card(TWO, SPADES),  Card(SIX, SPADES))
-//    print(hand.cards)
-//    hand.highCard should be (Card(SIX, HEARTS))
-//  }
+  test("highcard is six of hearts, in a hand where the highest card is six of hearts") {
+    val hand = Hand(Card(TWO, HEARTS), Card(THREE, HEARTS), Card(FIVE, SPADES), Card(TWO, SPADES),  Card(SIX, HEARTS))
+    hand.highCard should be (Card(SIX, HEARTS))
+  }
 }
