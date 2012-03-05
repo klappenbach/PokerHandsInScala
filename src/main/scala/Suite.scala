@@ -1,4 +1,4 @@
 object Suite extends Enumeration {
   type Suite = Value
-  val HEARTS = Value("Hearts")
+  val HEARTS, SPADES, CLUBS, DIAMONDS = Value
 }
