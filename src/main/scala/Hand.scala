@@ -2,13 +2,26 @@ import collection.immutable.SortedSet
 
 case class Hand(card1: Card, card2: Card, card3: Card, card4: Card, card5: Card) {
   val cards = try {
-    SortedSet(card1, card2, card3, card4, card5).toList.reverse
+    SortedSet(card1, card2, card3, card4, card5).toList
   } catch {
     case e: NullPointerException => throw new CardIsNullException
   }
   if (cards.size != 5) throw new DuplicateCardsException
 
-  def highCard = cards.head
+  lazy val highCard = cards.reverse.head
+
+  lazy val isStraight = cards.map(_.rank.id).toStream zip Stream.from(cards.head.rank.id) forall {
+    case (a, b) => a == b
+  }
+
+  lazy val isFlush = cards.forall(card => card.suite.id == cards.head.suite.id )
+
+  lazy val isStraightFlush = isStraight && isFlush
+
+  // TODO: There must be an easier way...
+  lazy val isFourOfAKind = (cards map(_.rank.id) toSet).size == 2 && cards.groupBy(_.rank.id).values.exists(list => list.size == 1) // 4 cards -> 1 since they are of equal rank
+
+  lazy val isThreeOfAKind = (cards map(_.rank.id) toSet).size == 3 // 3 cards -> 1 since they are of equal rank
 }
 
 class InvalidHandException(msg:String) extends RuntimeException(msg)
