@@ -36,9 +36,16 @@ class HandTest extends FunSuite with ShouldMatchers {
     hand.isStraight should be(true)
   }
 
-  test("2 3 4 5 ace in different suits does not form a straight") {
+  test("2 3 4 5 ace in different suits does not form any hand") {
     val hand = Hand(Card(TWO, HEARTS), Card(THREE, HEARTS), Card(FOUR, SPADES), Card(FIVE, SPADES), Card(ACE, HEARTS))
     hand.isStraight should be(false)
+    hand.isPair should be(false)
+    hand.isTwoPair should be(false)
+    hand.isThreeOfAKind should be(false)
+    hand.isFourOfAKind should be(false)
+    hand.isFlush should be(false)
+    hand.isStraightFlush should be(false)
+   hand.isFullHouse should be(false)
   }
 
   test("2 3 4 6 ace of clubs forms a flush") {
