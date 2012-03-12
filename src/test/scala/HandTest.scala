@@ -61,23 +61,33 @@ class HandTest extends FunSuite with ShouldMatchers {
     hand.isFourOfAKind should be(true)
   }
 
-  test("5 5 5 2 6 of different suits not form four of a kind") {
+  test("5 5 5 2 6 of different suits does not form four of a kind") {
     val hand = Hand(Card(FIVE, HEARTS), Card(FIVE, CLUBS), Card(FIVE, SPADES), Card(TWO, DIAMONDS), Card(ACE, HEARTS))
     hand.isFourOfAKind should be(false)
   }
 
-  test("5 5 5 2 2 of different suits not form four of a kind") {
+  test("5 5 5 2 2 of different suits does not form four of a kind") {
     val hand = Hand(Card(FIVE, HEARTS), Card(FIVE, CLUBS), Card(FIVE, SPADES), Card(TWO, DIAMONDS), Card(TWO, HEARTS))
     hand.isFourOfAKind should be(false)
   }
 
-test("5 5 5 2 6 of different suits form three of a kind") {
+  test("5 5 5 2 6 of different suits forms three of a kind") {
     val hand = Hand(Card(FIVE, HEARTS), Card(FIVE, CLUBS), Card(FIVE, SPADES), Card(TWO, DIAMONDS), Card(ACE, HEARTS))
     hand.isThreeOfAKind should be(true)
   }
 
-    test("5 5 5 5 6 of different suits does not form three of a kind") {
+  test("5 5 5 5 6 of different suits does not form three of a kind") {
     val hand = Hand(Card(FIVE, HEARTS), Card(FIVE, CLUBS), Card(FIVE, SPADES), Card(FIVE, DIAMONDS), Card(ACE, HEARTS))
     hand.isThreeOfAKind should be(false)
+  }
+
+  test("5 5 2 3 6 of different suits forms  a pair") {
+    val hand = Hand(Card(FIVE, HEARTS), Card(FIVE, CLUBS), Card(TWO, SPADES), Card(THREE, DIAMONDS), Card(ACE, HEARTS))
+    hand.isPair should be(true)
+  }
+
+  test("5 5 5 3 6 of different suits does not form  a pair") {
+    val hand = Hand(Card(FIVE, HEARTS), Card(FIVE, CLUBS), Card(FIVE, SPADES), Card(THREE, DIAMONDS), Card(ACE, HEARTS))
+    hand.isPair should be(false)
   }
 }

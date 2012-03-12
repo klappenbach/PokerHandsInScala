@@ -10,9 +10,9 @@ case class Hand(card1: Card, card2: Card, card3: Card, card4: Card, card5: Card)
 
   lazy val highCard = cards.reverse.head
 
-  lazy val isPair = cards.map(_.rank.id).toSet.size = 4
+  lazy val isPair = removeRankGroupOfSize(2).size == 3
 
-  lazy val isTwoPair = cards.map(_.rank.id).toSet.size = 3
+  lazy val isTwoPair = removeRankGroupOfSize(2).size == 2
 
   lazy val isStraight = cards.map(_.rank.id).toStream zip Stream.from(cards.head.rank.id) forall {
     case (a, b) => a == b
@@ -23,11 +23,18 @@ case class Hand(card1: Card, card2: Card, card3: Card, card4: Card, card5: Card)
   lazy val isStraightFlush = isStraight && isFlush
 
   // TODO: There must be an easier way... can probably be expressed in terms of not full house
-  lazy val isFourOfAKind = (cards map(_.rank.id) toSet).size == 2 && cards.groupBy(_.rank.id).values.exists(list => list.size == 1) // 4 cards -> 1 since they are of equal rank
+  lazy val isFourOfAKind = removeRankGroupOfSize(4).size == 1  // 4 cards -> 1 since they are of equal rank
 
   lazy val isThreeOfAKind = (cards map(_.rank.id) toSet).size == 3 // 3 cards -> 1 since they are of equal rank
 
-  private def removeCardGroupOfSameRankWithGroupSize(groupSize: Int): SortedSet[Card] = cards.groupBy(_.rank.id).filter((i: Int, list: List[Card]) => true)
+
+
+  // Removes groups (grouped on rank, e.g. 7's or Jacks) of cards of a given group size
+  private def removeRankGroupOfSize(groupSize: Int): Set[Card] = {
+    val groupedByRank = cards.groupBy(_.rank.id).values
+    val withoutGroupOfSize = groupedByRank.filterNot(_.size == groupSize)
+    withoutGroupOfSize.flatten.toSet
+  }
 }
 
 class InvalidHandException(msg:String) extends RuntimeException(msg)
