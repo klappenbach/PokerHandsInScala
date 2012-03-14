@@ -123,6 +123,19 @@ class HandTest extends FunSuite with ShouldMatchers {
     hand.isFullHouse should be(false)
   }
 
+  test("5 5 5 2 2 of different suits forms a full house") {
+    val hand = Hand(Card(FIVE, HEARTS), Card(FIVE, CLUBS), Card(FIVE, SPADES), Card(TWO, DIAMONDS), Card(TWO, HEARTS))
+    hand.isFullHouse should be(true)
+
+    hand.isStraight should be(false)
+    hand.isPair should be(false)
+    hand.isTwoPair should be(false)
+    hand.isThreeOfAKind should be(false)
+    hand.isFourOfAKind should be(false)
+    hand.isFlush should be(false)
+    hand.isStraightFlush should be(false)
+  }
+
   test("5 5 5 5 6 of different suits does not form three of a kind") {
     val hand = Hand(Card(FIVE, HEARTS), Card(FIVE, CLUBS), Card(FIVE, SPADES), Card(FIVE, DIAMONDS), Card(ACE, HEARTS))
     hand.isThreeOfAKind should be(false)
@@ -132,7 +145,21 @@ class HandTest extends FunSuite with ShouldMatchers {
     val hand = Hand(Card(FIVE, HEARTS), Card(FIVE, CLUBS), Card(TWO, SPADES), Card(THREE, DIAMONDS), Card(ACE, HEARTS))
     hand.isPair should be(true)
 
+    hand.isTwoPair should be(false)
     hand.isStraight should be(false)
+    hand.isThreeOfAKind should be(false)
+    hand.isFourOfAKind should be(false)
+    hand.isFlush should be(false)
+    hand.isStraightFlush should be(false)
+    hand.isFullHouse should be(false)
+  }
+
+  test("5 5 3 3 6 of different suits forms two pair") {
+    val hand = Hand(Card(FIVE, HEARTS), Card(FIVE, CLUBS), Card(THREE, SPADES), Card(THREE, DIAMONDS), Card(ACE, HEARTS))
+    hand.isTwoPair should be(true)
+
+    hand.isStraight should be(false)
+    hand.isPair should be(false)
     hand.isThreeOfAKind should be(false)
     hand.isFourOfAKind should be(false)
     hand.isFlush should be(false)
