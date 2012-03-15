@@ -10,15 +10,15 @@ case class Hand(card1: Card, card2: Card, card3: Card, card4: Card, card5: Card)
 
   lazy val highCard = cards.reverse.head
 
-  lazy val isPair = cards.withoutPairs.withoutThreeOfAKind.size == 3
+  lazy val isPair = cards.subtractPairs.subtractThreeOfAKind.size == 3
 
-  lazy val isTwoPair = cards.withoutPairs.size == 1
+  lazy val isTwoPair = cards.subtractPairs.size == 1
 
-  lazy val isThreeOfAKind = cards.withoutThreeOfAKind.withoutPairs.size == 2 // withoutPairs should not change the result (not full house)
+  lazy val isThreeOfAKind = cards.subtractThreeOfAKind.subtractPairs.size == 2 // subtractPairs should not change the result (not full house)
 
-  lazy val isFullHouse = cards.withoutPairs.withoutThreeOfAKind.size == 0
+  lazy val isFullHouse = cards.subtractPairs.subtractThreeOfAKind.size == 0
 
-  lazy val isFourOfAKind = cards.withoutFourOfAKind.size == 1
+  lazy val isFourOfAKind = cards.subtractFourOfAKind.size == 1
 
   lazy val isFlush = cards.forall(card => card.suite.id == cards.head.suite.id )
 
@@ -33,11 +33,11 @@ case class Hand(card1: Card, card2: Card, card3: Card, card4: Card, card5: Card)
   trait CardList {
     val cards: List[Card]
 
-    def withoutPairs = withoutRankGroupsOfSize(2)
-    def withoutThreeOfAKind = withoutRankGroupsOfSize(3)
-    def withoutFourOfAKind = withoutRankGroupsOfSize(4)
+    def subtractPairs = subtractRankGroupsOfSize(2)
+    def subtractThreeOfAKind = subtractRankGroupsOfSize(3)
+    def subtractFourOfAKind = subtractRankGroupsOfSize(4)
 
-    private def withoutRankGroupsOfSize(groupSize: Int): List[Card] = {
+    private def subtractRankGroupsOfSize(groupSize: Int): List[Card] = {
         val groupedByRank = cards.groupBy(_.rank.id).values
         val withoutGroupOfSize = groupedByRank.filterNot(_.size == groupSize)
         withoutGroupOfSize.flatten.toList
